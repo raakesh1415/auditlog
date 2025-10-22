@@ -110,12 +110,7 @@ async function fetchAuditLogsWithPagination(accessToken) {
             console.log(`No more pages available`);
             break;
         }
-        
-        // Safety break to prevent infinite loops
-        if (pageCount > 100) {
-            console.log(`Warning: Reached maximum page limit (100)`);
-            break;
-        }
+
     }
     
     return allLogs;
@@ -130,7 +125,7 @@ async function fetchAuditLogsPage(accessToken, timeFrom, timeTo, handle) {
         urlPath += `&handle=${encodeURIComponent(handle)}`;
     }
     
-    console.log(`Fetching: ${urlPath.substring(0, 100)}...`);
+    // console.log(`Fetching: ${urlPath.substring(0, 100)}...`);
     
     const options = {
         hostname: auditLogUrl.hostname,
@@ -152,7 +147,7 @@ async function fetchAuditLogsPage(accessToken, timeFrom, timeTo, handle) {
             
             res.on('end', () => {
                 try {
-                    // Parse response - it should be a direct array
+                    // Parse response as a direct array
                     let response;
                     try {
                         response = JSON.parse(data);
@@ -163,17 +158,9 @@ async function fetchAuditLogsPage(accessToken, timeFrom, timeTo, handle) {
                         return;
                     }
                     
-                    // Handle different response formats
                     let records = [];
                     if (Array.isArray(response)) {
-                        // Direct array response
                         records = response;
-                    } else if (response.auditlogrecords && Array.isArray(response.auditlogrecords)) {
-                        // Nested format
-                        records = response.auditlogrecords;
-                    } else if (response.value && Array.isArray(response.value)) {
-                        // OData format
-                        records = response.value;
                     }
                     
                     // Extract handle from response headers for pagination
@@ -181,8 +168,7 @@ async function fetchAuditLogsPage(accessToken, timeFrom, timeTo, handle) {
                     let nextHandle = null;
                     
                     if (pagingHeader) {
-                        console.log(`Paging header: ${pagingHeader.substring(0, 100)}...`);
-                        // Parse the paging header to extract handle
+                        // console.log(`Paging header: ${pagingHeader.substring(0, 100)}...`);
                         const handleMatch = pagingHeader.match(/handle=([^;,\s]+)/);
                         if (handleMatch && handleMatch[1]) {
                             nextHandle = handleMatch[1];

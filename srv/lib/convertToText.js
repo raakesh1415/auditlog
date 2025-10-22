@@ -9,7 +9,7 @@ async function convertToText(auditLogData) {
         const fileName = `audit_logs.txt`;
         const filePath = path.join(__dirname, '../../', fileName);
         
-        // Convert audit log data to formatted JSON string
+        // Convert audit log data to JSON string format
         const textContent = JSON.stringify(auditLogData, null, 2);
         
         // Write to file
