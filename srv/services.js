@@ -10,12 +10,6 @@ module.exports = (srv) => {
         const textFilePath = await convertToText(auditLogData);
         const result = await sendEmail(textFilePath);
         
-        // if (isJob) {
-        //     // For scheduled jobs, result is already sent via 202 status
-        //     return result;
-        // } else {
-        //     return result;
-        // }
         return result;
     });
 }

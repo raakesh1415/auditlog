@@ -39,6 +39,7 @@ async function sendEmail(textFilePath) {
                     <body>
                         <h2>Audit Log Retrieval - Success</h2>
                         <p>The audit log retrieval has been completed successfully.</p>
+                        <p>Please find the audit logs in the attached text file.</p>
                     </body>
                 </html>
             `,
